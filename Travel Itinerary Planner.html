@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Itinerary Planner</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  .container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  input[type="text"], input[type="date"] {
+    width: calc(50% - 5px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  input[type="button"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  input[type="button"]:hover {
+    background-color: #45a049;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    margin-bottom: 5px;
+  }
+  .fa-trash-alt {
+    cursor: pointer;
+  }
+   /* Example of CSS media queries */
+/* For smaller screens (mobile devices) */
+@media only screen and (max-width: 600px) {
+    /* CSS rules for small screens */
+  }
+  
+  /* For medium-sized screens (tablets) */
+  @media only screen and (min-width: 601px) and (max-width: 1024px) {
+    /* CSS rules for medium-sized screens */
+  }
+  
+  /* For larger screens (desktops) */
+  @media only screen and (min-width: 1025px) {
+    /* CSS rules for large screens */
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Travel Itinerary Planner</h1>
+  <input type="text" id="destination" placeholder="Destination">
+  <input type="date" id="date" placeholder="Date">
+  <input type="button" value="Add" onclick="addItinerary()">
+  <ul id="itineraryList"></ul>
+  <input type="button" value="Save Itinerary" onclick="saveItinerary()">
+</div>
+
+<script>
+  // Load itinerary from local storage if available
+  window.onload = function() {
+    loadItinerary();
+  }
+
+  // Function to add itinerary item
+  function addItinerary() {
+    var destination = document.getElementById("destination").value;
+    var date = document.getElementById("date").value;
+    if (destination && date) {
+      var listItem = document.createElement("li");
+      listItem.innerHTML = destination + " - " + date + "<i class='fas fa-trash-alt' onclick='removeItem(this)'></i>";
+      document.getElementById("itineraryList").appendChild(listItem);
+      document.getElementById("destination").value = "";
+      document.getElementById("date").value = "";
+    } else {
+      alert("Please enter destination and date");
+    }
+  }
+
+  // Function to remove itinerary item
+  function removeItem(item) {
+    item.parentElement.remove();
+  }
+
+  // Function to save itinerary to local storage
+  function saveItinerary() {
+    var itineraryItems = [];
+    var items = document.querySelectorAll("#itineraryList li");
+    items.forEach(function(item) {
+      itineraryItems.push(item.innerText);
+    });
+    localStorage.setItem("itinerary", JSON.stringify(itineraryItems));
+    alert("Itinerary saved successfully!");
+  }
+
+  // Function to load itinerary from local storage
+  function loadItinerary() {
+    var savedItinerary = JSON.parse(localStorage.getItem("itinerary"));
+    if (savedItinerary) {
+      savedItinerary.forEach(function(itemText) {
+        var listItem = document.createElement("li");
+        listItem.innerHTML = itemText + "<i class='fas fa-trash-alt' onclick='removeItem(this)'></i>";
+        document.getElementById("itineraryList").appendChild(listItem);
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
